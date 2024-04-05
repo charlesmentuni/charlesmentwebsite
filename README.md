@@ -1,6 +1,6 @@
 # Charles Ment Personal Web Page
 
-This project aims to create a personal web page in order to showcase my projects and achievements. To make this project more challenging, I decided to enclose the information inside a fake terminal. This not only makes the problem more difficult, but also makes it more interactive with the user.
+This project aims to create a personal web page in order to showcase my projects and achievements. To make this project more challenging, I decided to enclose the information inside a fake terminal. This not only makes the problem more difficult, but also makes it more interactive with the user. Undertaking this task requires proper commenting of code and strong organisation.
 
 ### Added Functionality
 

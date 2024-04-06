@@ -12,10 +12,12 @@
   
 .terminal-output {
     height: calc(100% - 30px);
+    overflow-y: scroll;
 }
   
 .terminal-output .input {
     color: white; /* Green for input */
+    font-weight: bold;
     white-space: initial;
     word-break: break-word;
 }

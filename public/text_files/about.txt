@@ -1,0 +1,7 @@
+--- About ---
+This is the about section of the website.
+I will definitely edit this at some point to have
+a nice description.
+Features of the website
+    - Stuff
+    - Other Stuff

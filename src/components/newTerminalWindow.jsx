@@ -4,39 +4,43 @@ import './newTerminalWindow.css';
 export function NewTerminalWindow() {
   const [inputValue, setInputValue] = useState('');
   const [output, setOutput] = useState([]);
-
+  const [commandRunning, setCommandRunning] = useState(false);
+  const [commandHistory, setCommandHistory] = useState([]);
+  const [fileContent, setFileContent] = useState("");
   // Treat the current directory like a stack to allow for easy navigation
   const [currentDirectory, setCurrentDirectory] = useState([]);
 
   const directories = {'main' : 
                         [{'projects' : 
-                            ['project1', 
-                            'project2', 
-                            'project3']}, 
+                            ['project1.txt', 
+                            'project2.txt', 
+                            'project3.txt']}, 
                         {'links': 
                             ['github.txt', 
                             'linkedin.txt', 
                             'resume.txt']},
                         "about.txt"]};
-    // get height of terminal window
-    //const terminalWindow = document.querySelector('.terminal-window');
-    //const maxLength = terminalWindow.clientWidth 
-
+    
+// read text files
+   async function fetchFile(fileName) {
+       const response = await fetch("../text_files/"+fileName);
+       const text = await response.text();
+       setFileContent(text);
+  }
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
   const runCommand = (command) => {
-        // parse the command
+
     // This should get all the files and folders in the current directory
-    
     let allFiles = directories.main;
     currentDirectory.forEach((key) =>
     {
-        console.log("KEY", key);
         allFiles.forEach((key1) =>
         {
+            // Objects denote folders so this checks if the key is the same folder as the current directory
             if (typeof key1 === 'object' && key === Object.keys(key1)[0]){
                 allFiles = key1[key];                
             }
@@ -64,8 +68,30 @@ export function NewTerminalWindow() {
     else if (comm === "cd"){
         // if loc in not undefined
         if (loc !== undefined){
-            loc.split("/");
+            let locDirectories = loc.split("/");
+            console.log(locDirectories);
+            let tempDirectory = currentDirectory;
+            locDirectories.forEach((key) => {
+                if (key === '..'){
+                    tempDirectory.pop();
+                }
+                else{
+                    tempDirectory.push(key);
+                }
+            });
+            setCurrentDirectory(tempDirectory);
+
         }
+        
+    } else if (comm === "cat"){
+        fetchFile(loc);
+        setOutput(output.concat({type: 'output', text: fileContent}));
+        //setOutput(output.concat({type: 'output', text: data}));
+        
+    }
+    else {
+        console.log("cd : missing operand");
+        setOutput(output.concat({type: 'output', text: `${comm} : unknown command`}));
     }
     };
 
@@ -76,11 +102,18 @@ export function NewTerminalWindow() {
       const newOutput = [...output, { type: 'input', text: inputValue }];
       if (inputValue.length)
       setOutput(newOutput);
-      runCommand(inputValue);
-      setInputValue('');
+      setCommandRunning(true);
       
     }
   };
+  useEffect(() => {
+    if (commandRunning){
+        console.log(inputValue);
+        runCommand(inputValue);
+        setCommandRunning(false);
+        setInputValue('');
+    }
+  }, [output, commandRunning]);
 
   return (
     <div className="terminal-window">

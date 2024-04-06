@@ -1,0 +1,11 @@
+-- Project 3 --
+Placeholder for a real Project.
+Features
+- Feature 1
+- Feature 2
+Challenges
+- Challenge 1
+- Challenge 2
+Skills Aquired
+- Skill 1
+- Skill 2
